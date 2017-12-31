@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { CameraPreview } from "@ionic-native/camera-preview";
 import { IonicStorageModule } from "@ionic/storage";
+import { SQLite } from "@ionic-native/sqlite";
 
 import { ChatpopPage } from "../pages/chatpop/chatpop";
 import { CallspopPage } from "../pages/callspop/callspop";
@@ -14,6 +15,7 @@ import { StatuspopPage } from "../pages/statuspop/statuspop";
 
 
 import { MyApp } from './app.component';
+import { OfflinedbProvider } from '../providers/offlinedb/offlinedb';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { MyApp } from './app.component';
     StatusBar,
     SplashScreen,
     CameraPreview,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    SQLite,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    OfflinedbProvider
   ]
 })
 export class AppModule {}

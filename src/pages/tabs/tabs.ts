@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 
 /**
  * Generated class for the TabsPage page.
@@ -20,7 +21,34 @@ export class TabsPage {
   tab3Root: string = "StatusPage";
   tab4Root: string = "CallsPage";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  //private db: SQLiteObject;
+
+  
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite, public toastCtrl: ToastController) {
+    var toaster = this.toastCtrl.create({
+      duration: 3000,
+      position: 'bottom'
+    });
+   // this.storage = new SQLite();
+    this.sqlite.create({
+      name: 'whatsup.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {
+      db.executeSql('create table if not exists tblusers(uid VARCHAR(100)), displayName VARCHAR(100), photoURL VARCHAR(100), userStatus VARCHAR(300)', {}).then(() => {
+        toaster.setMessage('Table created successfully');
+        toaster.present();
+        console.log('Table created successfully')
+      }).catch(e => {
+        toaster.setMessage('There was an error creating table: ' + e);
+        toaster.present();
+        console.error('There was an error creating table: ' + e);
+      });
+    }).catch(e => {
+      toaster.setMessage('There was an error creating database: ' + e);
+      toaster.present();
+      console.error('There was an error creating database: ' + e);
+    });
   }
 
   ionViewDidLoad() {
